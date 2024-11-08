@@ -7,4 +7,4 @@
 
 
 // UTILS
-long    ft_atol(char *s);
+long    ft_atol(char *s); // strtoll
