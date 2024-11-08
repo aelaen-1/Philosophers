@@ -12,6 +12,13 @@
 
 #include "include/philo.h"
 
+static void     error_msg(void)
+{
+    printf("Invalid input. Args must be strictly positive");
+    // printf("Invalid input : nb_of_philos time_to_die time_to_eat
+        //     time_to_sleep nb_of_meal");
+}
+
 static void    fill_input(char *s, char **av, args input)
 {
     if (s == av[1])
@@ -24,13 +31,6 @@ static void    fill_input(char *s, char **av, args input)
         input.time_to_sleep = ft_strtoll(av[4]);
     else if (s == av[5])
         input.nb_of_meals = ft_strtoll(av[5]);
-}
-
-static void     error_msg(void)
-{
-    printf("Invalid input. Args must be strictly positive");
-    // printf("Invalid input : nb_of_philos time_to_die time_to_eat
-        //     time_to_sleep nb_of_meal");
 }
 
 int     init_input(int ac, char **av)
