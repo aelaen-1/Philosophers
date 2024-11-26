@@ -8,7 +8,7 @@ void    *start_living(void *p)
 
     if ((myself->id % 2) == 0)
     	ft_sleep_ms(myself->diner_infos->time_to_eat);
-    while (!dead_or_all_eaten(myself))
+    while (!sb_is_dead_listener(myself))
     {
         philo_eat(myself);
         philo_sleep(myself);
