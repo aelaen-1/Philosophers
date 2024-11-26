@@ -53,7 +53,6 @@ struct  Philosopher{
     int     id;
     int     meal_counter;
     int     last_eaten;
-//     int         *dead;
     enum State      state;
     struct Fork   *left_fork;
     struct Fork   *right_fork;
