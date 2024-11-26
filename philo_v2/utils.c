@@ -50,7 +50,7 @@ void    write_log(struct Philosopher *p, char *s)
 {
     if (!pthread_mutex_lock(&p->diner_infos->log_mutex))
     {
-        if (!dead_or_all_eaten(p))
+        if (!sb_is_dead_listener(p))
             printf("%lld %d %s\n", time_now_ms(p->diner_infos->program_start), p->id, s);
         pthread_mutex_unlock(&p->diner_infos->log_mutex);
     }
