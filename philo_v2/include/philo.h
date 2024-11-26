@@ -102,6 +102,6 @@ TimeMs  get_remaining_lifetime(struct Philosopher *p);
 
 // solve helgrind pbs
 
-int     dead_or_all_eaten(struct Philosopher *philo);
+int     sb_is_dead_listener(struct Philosopher *philo);
 
 #endif
