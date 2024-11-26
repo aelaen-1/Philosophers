@@ -6,102 +6,111 @@
 /*   By: aelaen <aelaen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:57:15 by aboukezi          #+#    #+#             */
-/*   Updated: 2024/11/23 12:44:21 by aelaen           ###   ########.fr       */
+/*   Updated: 2024/11/26 22:49:14 by aelaen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
- #define PHILO_H
+# define PHILO_H
 
-# include <pthread.h>
-# include <unistd.h>
-# include <sys/types.h> 
-# include <sys/time.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <stdbool.h>
 # include "colors.h"
+# include <pthread.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <sys/types.h>
+# include <unistd.h>
 # define NO_MEAL_LIMIT -65
 # define USE_USLEEP 0
 
-typedef long long TimeMs;
+#define BHRED "\e[1;91m"
+#define BHGRN "\e[1;92m"
+#define BHYEL "\e[1;93m"
+#define BHBLU "\e[1;94m"
+#define BHCYN "\e[1;96m"
+#define BHWHT "\e[1;97m"
+#define reset "\e[0m"
 
-enum State{
-    EATING,
-    SLEEPING,
-    THINKING,
-    VOID  
+typedef long long	TimeMs;
+
+enum				State
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	VOID
 };
 
-struct Diner{
-        int     nb_of_philos;
-        int     time_to_die;
-        int     time_to_eat;
-        int     time_to_sleep;
-        int     nb_of_meals;
-        TimeMs  program_start;
-        int     sb_is_dead;
-        pthread_mutex_t log_mutex;
+struct				Diner
+{
+	int				nb_of_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				nb_of_meals;
+	TimeMs			program_start;
+	int				sb_is_dead;
+	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	eating_change_mutex;
-        pthread_mutex_t sb_is_dead_mutex;
+	pthread_mutex_t	sb_is_dead_mutex;
 };
 
-struct  Philosopher{
-    pthread_t thread;
-    struct Diner *diner_infos;
-    int     index;
-    int     id;
-    int     meal_counter;
-    int     last_eaten;
-    enum State      state;
-    struct Fork   *left_fork;
-    struct Fork   *right_fork;
+struct				Philosopher
+{
+	pthread_t		thread;
+	struct Diner	*diner_infos;
+	int				index;
+	int				id;
+	int				meal_counter;
+	int				last_eaten;
+	enum State		state;
+	struct Fork		*left_fork;
+	struct Fork		*right_fork;
 };
 
-struct  Fork{
-    int     index;
-    pthread_mutex_t mutex;
+struct				Fork
+{
+	int				index;
+	pthread_mutex_t	mutex;
 };
 
-
-//              INIT : 
-        /*   input_check.c  */
-int     error_input(int ac, char **av);
-        /*   set_the_table.c  */
-int     init_input(int ac, char **av, struct Diner *diner);
-int     init_philos_and_forks(struct Philosopher *philos, struct Fork *forks, struct Diner *diner);
-int     pthread_create_join(struct Philosopher *philos, struct Fork *forks, struct Diner *diner);
-void    clean_mutex(struct Fork *forks, struct Diner *diner);
+//              INIT :
+/*   input_check.c  */
+int					error_input(int ac, char **av);
+/*   set_the_table.c  */
+int					init_input(int ac, char **av, struct Diner *diner);
+int					init_philos_and_forks(struct Philosopher *philos,
+						struct Fork *forks, struct Diner *diner);
+int					pthread_create_join(struct Philosopher *philos,
+						struct Fork *forks, struct Diner *diner);
+void				clean_mutex(struct Fork *forks, struct Diner *diner);
 
 //              PHILOS' LIVES EXECUTION
-            /*      philo_life.c        */
-void    *start_living(void *p);
-void	philo_think(struct Philosopher  *philo);
-void	philo_sleep(struct Philosopher  *philo);
-void	philo_eat(struct Philosopher  *philo);
+/*      philo_life.c        */
+void				*start_living(void *p);
+void				philo_think(struct Philosopher *philo);
+void				philo_sleep(struct Philosopher *philo);
+void				philo_eat(struct Philosopher *philo);
 
 //              MONITORING
-        /*    check_if_end.c    */
-int     check_if_dead(struct Philosopher *philos);
-int     everyone_ate(struct Philosopher *philos);
-void    *tracker_routine(void *p);
+/*    check_if_end.c    */
+int					check_if_dead(struct Philosopher *philos);
+int					everyone_ate(struct Philosopher *philos);
+int					sb_is_dead_listener(struct Philosopher *philo);
+void				*tracker_routine(void *p);
 
 //              UTILS
-        /*     utils.c     */
-long long   ft_strtoll(char *s);
-int     min(int a, int b);
-void    clean_mutex(struct Fork *forks, struct Diner *diner);
-void    write_log(struct Philosopher *p, char *s);
-
+/*     utils.c     */
+long long			ft_strtoll(char *s);
+int					min(int a, int b);
+void				clean_mutex(struct Fork *forks, struct Diner *diner);
+void				write_log(struct Philosopher *p, char *s);
 
 //              TIME FUNCTIONS
-        /*         time.c         */
-void    ft_sleep_ms(TimeMs duration);
-TimeMs  time_now_ms(TimeMs start_time);
-TimeMs  get_remaining_lifetime(struct Philosopher *p);
-
-// solve helgrind pbs
-
-int     sb_is_dead_listener(struct Philosopher *philo);
+/*         time.c         */
+void				ft_sleep_ms(TimeMs duration);
+TimeMs				time_now_ms(TimeMs start_time);
+TimeMs				get_remaining_lifetime(struct Philosopher *p);
 
 #endif
