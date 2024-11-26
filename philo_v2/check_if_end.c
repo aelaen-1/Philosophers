@@ -57,7 +57,7 @@ int check_if_dead(struct Philosopher *philos)
 }
 
             // LISTENER TO SB_IS_DEAD VARIABLE
-int		dead_or_all_eaten(struct Philosopher *philo)
+int		sb_is_dead_listener(struct Philosopher *philo)
 {
 	pthread_mutex_lock(&philo->diner_infos->sb_is_dead_mutex);
 	if (philo->diner_infos->sb_is_dead == 1)
