@@ -13,7 +13,6 @@
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "colors.h"
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
